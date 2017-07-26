@@ -1,0 +1,47 @@
+#state {
+	position: absolute;
+	left: 70px;
+	top: 100px;
+	color: black;
+}
+
+#username {
+	color: black;
+}
+
+.btn-group {
+	position: absolute;
+	top: 50px;
+}
+
+.button {
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+#sair {
+	background-color: red;
+}
+
+#ligar {
+	background-color: green;
+}
+
+#reset {
+	background-color: blue;
+}
+
+body {
+	background-color: #c0c178 ;
+}
+
+h2 {
+	font-size: 20px;
+}

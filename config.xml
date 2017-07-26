@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='utf-8'?>
+<access origin="*" />
+<widget id="com.remote.pimweb" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="https://phonegap.com/ns/1.0">
+	<name>RemoteControl</name>
+	<description>
+		This app controls a tp-link HS100 and HS110 through the internet.
+	</description>
+
+	<author email="pi.monteiro1998@gmail.com">Filipe Monteiro</author>
+
+	<preference name="remote-link" value="cli-6.0.0" />
+
+<plugin>
+  <!-- allow access to internet -->
+  <preference name="permissions" value="none" />
+</widget>
