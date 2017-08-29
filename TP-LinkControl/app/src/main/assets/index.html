@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Remote Control</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="css/bootstrap.css" rel="stylesheet" />
+    <link href="css/bootstrap-theme.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="styles_controlador.css" />
+    <script src="scripts.js"></script>
+
+
+	<script>
+		document.addEventListener("DOMContentLoaded", start_controller_load());
+	</script>
+
+</head>
+
+
+<body>
+<div class="adapt">
+	<div class="btn-group">
+		<button id="ligar" class="button" onclick="post()">Ligar</button>
+		<button id="sair" class="button" onclick="exit()">Logout</button>
+		<button id="reset" class="button" onclick="sendPOST2()">Reset</button>
+	</div>
+	<h1 class="display-1" id="state"></h1>
+	<h2 id="username">Utilizador: </h2>
+	<h3 id="tempo">segundos</h3>
+	<h4 id="timer"></h4>
+	<img src="offline.png" id="off">
+
+<div id="dropdown_time">
+	<select id="time">
+	  <option value="1">1</option>
+	  <option value="2">2</option>
+	  <option selected="selected" value="3">3</option>
+	  <option value="4">4</option>
+	  <option value="5">5</option>
+	</select>
+<script>
+	document.getElementById("username").innerHTML = "Utilizador: " + localStorage.email;
+</script>
+</div>
+	
+  <p id="copyright">Desenvolvido por: Filipe Monteiro</p>
+  <img src="loading.gif" id="loading" style="position: absolute; top: 100px; left: 30px; width: 300px; height: 300px; visibility: hidden;">
+  
+</body>
+</html>
