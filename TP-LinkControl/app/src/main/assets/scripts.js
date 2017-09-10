@@ -1,5 +1,4 @@
 var save = 0;
-var deviceID = 0;
 
 function start_controller_load () {
 	check_session();
@@ -110,7 +109,6 @@ function post () {
 	var t = document.getElementById("time").value;
 
 		sendPOST1();
-		setTimeout(sendPOST2, t * 1000);
 }
 function sendPOST2 () {
 	var xhr = new XMLHttpRequest();
@@ -121,7 +119,7 @@ function sendPOST2 () {
 		"method":"passthrough", 
 		"params": {"deviceId": "xxx", "requestData": "{\"system\":{\"set_relay_state\":{\"state\":\"x\"}}}" }
 		};
-	obj.params.deviceId = deviceID;
+	obj.params.deviceId = localStorage["ID 0"];
 
 	var requestDataOb = JSON.parse(obj.params.requestData);
 
@@ -154,7 +152,7 @@ function sendPOST1 () {
 		"method":"passthrough", 
 		"params": {"deviceId": "xxx", "requestData": "{\"system\":{\"set_relay_state\":{\"state\":\"x\"}}}" }
 		};
-	obj.params.deviceId = deviceID;
+	obj.params.deviceId = localStorage["ID 0"];
 
 	var requestDataOb = JSON.parse(obj.params.requestData);
 
@@ -175,6 +173,8 @@ function sendPOST1 () {
 
 			if (json.error_code == "0") {
 				document.getElementById("loading").style.visibility = "visible";
+				setTimeout(sendPOST2, t * 1000);
+
 			}
 			if (json.error_code == "-20571") {
 				alert("Aparelho Desconectado. Verifique a conexao");
@@ -213,15 +213,27 @@ function get_ID () {
 			else {
 				//alert("Sucess!");
 				//console.log(JSON.stringify(json)); //TESTE
-				deviceID = json.result.deviceList[0].deviceId;
-				console.log("ID: " + deviceID); //TESTE
+				save_ids(json);
+				//console.log("ID: " + deviceID); //TESTE
 				get_state();
-				setInterval(get_state, 3000);
+				setInterval(get_state, 3000); //SEE IF IT WORKS
+
 			}
 		}
 	};
 
 
+}
+
+function save_ids (json) {
+    for (var i = 0; i < json.result.deviceList.length; i++) {
+    		var name = "Device " + i;
+    		alert(name);
+    		localStorage[name] = json.result.deviceList[i].alias;
+    		var id = "ID " + i;
+    		localStorage[id] = json.result.deviceList[i].deviceId;
+    		alert(localStorage[name] + "::" + localStorage[id]);
+    	}
 }
 
 function kill () {
@@ -287,7 +299,7 @@ function get_state () {
  
     var obj = {"method":"passthrough", "params": {"deviceId": "xxx", "requestData": "{\"system\":{\"get_sysinfo\":null},\"emeter\":{\"get_realtime\":null}}"}};
  
-    obj.params.deviceId = deviceID;
+    obj.params.deviceId = localStorage["ID 0"];
  
     var data = JSON.stringify(obj);
  
@@ -308,7 +320,8 @@ function get_state () {
 
             }
             else if (json.error_code == "-20002") {
-            	console.log("Erro 'get_state' timout");
+            	console.log("Erro 'get_state' timeout");
+            	alert("erro -20002");
             }
             else if (json.error_code != "0" && json.error_code != "-20571" && json.error_code != "-20002"){
                 console.log("Erro 'get_state' : " + json.msg);
