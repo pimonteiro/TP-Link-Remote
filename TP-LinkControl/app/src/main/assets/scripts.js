@@ -2,12 +2,16 @@ var save = 0;
 
 function start_controller_load () {
 	check_session();
-	//valid_login(localStorage.email, localStorage.password);
+	valid_login(localStorage.email, localStorage.password); //TODO
 }
 
 function exit () {
 	kill();
 	window.location.replace("login.html");
+}
+
+function reload () {
+    document.location.reload();
 }
 
 function login_post(email, password){
@@ -21,7 +25,7 @@ function login_post(email, password){
 				 "appType": "Kasa_Android",
 				 "cloudUserName": "xxx",
 				 "cloudPassword": "xxx",
-				 "terminalUUID": "5b504504-5208-4444-a2ef-56dfb989d2fd"
+				 "terminalUUID": "5b504504-5208-4444-a2ef-56dfb989d2fd" //Alteravel - valor sem utilidade alguma
 				 }
 			};
 
@@ -37,7 +41,7 @@ function login_post(email, password){
 
 			xhr.onreadystatechange = function () {
 				if (xhr.status === 0) {
-		    		alert("Sem ligação á internet. Por favor connecte-se e faça restart á aplicação");
+		    	    alert("Sem ligação á internet. Por favor connecte-se e faça restart á aplicação");
 				}
 				if (xhr.readyState === 4 && xhr.status === 200) {
 					var json = JSON.parse(xhr.responseText);
@@ -152,7 +156,7 @@ function sendPOST1 () {
 		"method":"passthrough", 
 		"params": {"deviceId": "xxx", "requestData": "{\"system\":{\"set_relay_state\":{\"state\":\"x\"}}}" }
 		};
-	obj.params.deviceId = localStorage["ID 0"];
+	obj.params.deviceId = localStorage["ID 0"]; //TODO Criar atraves de um dropdown o dispositivo pretendido
 
 	var requestDataOb = JSON.parse(obj.params.requestData);
 
@@ -166,7 +170,9 @@ function sendPOST1 () {
 	xhr.send(data);
 	xhr.onreadystatechange = function () {
 		if (xhr.status === 0) {
-			alert("Internet desligada. Por favor abra a app com internet.");
+			//alert("Internet desligada. Por favor abra a app com internet.");
+			document.getElementById("internet").innerHTML =  "Sem internet, por favor desligue a aplicacao.";
+            setTimeout(reload, 3000);
 		}
 		if (xhr.readyState === 4 && xhr.status === 200) {
 			var json = JSON.parse(xhr.responseText);
@@ -177,7 +183,7 @@ function sendPOST1 () {
 
 			}
 			if (json.error_code == "-20571") {
-				alert("Aparelho Desconectado. Verifique a conexao");
+				alert("Aparelho Desconectado. Verifique a conexao entre o aparelho e a internet.");
 			}
 			if (json.error_code != "0" && json.error_code != "-20571") {
 				alert(xhr.responseText + "||" + json.msg + "||" + json.error_code);
@@ -228,11 +234,11 @@ function get_ID () {
 function save_ids (json) {
     for (var i = 0; i < json.result.deviceList.length; i++) {
     		var name = "Device " + i;
-    		alert(name);
+    		console.log(name);
     		localStorage[name] = json.result.deviceList[i].alias;
     		var id = "ID " + i;
     		localStorage[id] = json.result.deviceList[i].deviceId;
-    		alert(localStorage[name] + "::" + localStorage[id]);
+    		console.log(localStorage[name] + "::" + localStorage[id]);
     	}
 }
 
@@ -272,7 +278,9 @@ function valid_login (email, password) {
 
 	xhr.onreadystatechange = function () {
 		if (xhr.status === 0) {
-			alert("Internet desligada. Por favor abra a app com internet");
+			//("Internet desligada. Por favor abra a app com internet");
+			document.getElementById("internet").innerHTML =  "Sem internet, por favor desligue a aplicacao.";
+            setTimeout(reload, 3000);
 		}
 
 		if (xhr.readyState === 4 && xhr.status === 200) {
@@ -307,7 +315,9 @@ function get_state () {
  
     xhr.onreadystatechange = function () {
     	if (xhr.status === 0) {
-			alert("Internet desligada. Por favor abra a app com internet");
+			//ternet desligada. Por favor abra a app com internet");
+			document.getElementById("internet").innerHTML =  "Sem internet, por favor desligue a aplicacao.";
+            setTimeout(reload, 3000);;
     	}
 
         if (xhr.readyState === 4 && xhr.status === 200) {
@@ -320,8 +330,7 @@ function get_state () {
 
             }
             else if (json.error_code == "-20002") {
-            	console.log("Erro 'get_state' timeout");
-            	alert("erro -20002");
+            	console.log("Erro 'get_state' timeout   -20002");
             }
             else if (json.error_code != "0" && json.error_code != "-20571" && json.error_code != "-20002"){
                 console.log("Erro 'get_state' : " + json.msg);
