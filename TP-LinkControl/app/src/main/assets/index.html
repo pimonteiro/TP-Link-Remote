@@ -29,6 +29,7 @@
 	<h3 id="tempo">segundos</h3>
 	<h4 id="timer"></h4>
 	<p id="internet"></p>
+	<p style="position: absolute; top:125px; left: 200px; font-size: 20px;">Dispositivo</p>
 	<img src="offline.png" id="off">
 
 <div id="dropdown_time">
@@ -40,7 +41,12 @@
 	  <option value="5">5</option>
 	</select>
 </div>
+
+    <div id="dropdown_dispositivos">
+        <select id="dispositivos">
+        </select>
     </div>
+</div>
 <script>
 	document.getElementById("username").innerHTML = "Utilizador: " + localStorage.email;
 </script>

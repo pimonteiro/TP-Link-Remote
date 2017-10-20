@@ -1,8 +1,8 @@
 var save = 0;
+var total = 0;
 
 function start_controller_load () {
 	check_session();
-	valid_login(localStorage.email, localStorage.password); //TODO
 }
 
 function exit () {
@@ -91,7 +91,7 @@ function save_me () {
 
 function check_session () {
 	// alert("checking session if exists........");
-	console.log(localStorage.save);
+	//console.log(localStorage.save);
 	if(localStorage.save == undefined || localStorage.save == "0") {
 		alert("Not allowed!"); //TESTES
 
@@ -99,7 +99,7 @@ function check_session () {
 	}
 	else if (localStorage.save == "2") {
 	    localStorage.save = 0;
-	    console.log(localStorage.save);
+	    //console.log(localStorage.save);
 	    valid_login(localStorage.email, localStorage.password);
 	}
 	else {
@@ -112,7 +112,7 @@ function post () {
 	console.log(document.getElementById("time").value);
 	var t = document.getElementById("time").value;
 
-		sendPOST1();
+		sendPOST1(t);
 }
 function sendPOST2 () {
 	var xhr = new XMLHttpRequest();
@@ -123,7 +123,7 @@ function sendPOST2 () {
 		"method":"passthrough", 
 		"params": {"deviceId": "xxx", "requestData": "{\"system\":{\"set_relay_state\":{\"state\":\"x\"}}}" }
 		};
-	obj.params.deviceId = localStorage["ID 0"];
+	obj.params.deviceId = localStorage["ID 0"]; //TODO Substituir para o resultado da SELECT
 
 	var requestDataOb = JSON.parse(obj.params.requestData);
 
@@ -147,7 +147,7 @@ function sendPOST2 () {
 	
 }
 
-function sendPOST1 () {
+function sendPOST1 (t) {
 	var xhr = new XMLHttpRequest();
 	var url = "https://eu-wap.tplinkcloud.com/?token=" + localStorage.token
 	xhr.open("POST", url, true);
@@ -167,11 +167,12 @@ function sendPOST1 () {
 	var data = JSON.stringify(obj);
 	// alert(data);
 
+
 	xhr.send(data);
 	xhr.onreadystatechange = function () {
 		if (xhr.status === 0) {
 			//alert("Internet desligada. Por favor abra a app com internet.");
-			document.getElementById("internet").innerHTML =  "Sem internet, por favor desligue a aplicacao.";
+			document.getElementById("internet").innerHTML =  "Sem internet, por favor verifique a sua conexao.";
             setTimeout(reload, 3000);
 		}
 		if (xhr.readyState === 4 && xhr.status === 200) {
@@ -221,6 +222,7 @@ function get_ID () {
 				//console.log(JSON.stringify(json)); //TESTE
 				save_ids(json);
 				//console.log("ID: " + deviceID); //TESTE
+				atribui_options(total);
 				get_state();
 				setInterval(get_state, 3000); //SEE IF IT WORKS
 
@@ -231,15 +233,33 @@ function get_ID () {
 
 }
 
+function atribui_options (total) {
+    for (var i = 0; i < total; i++) {
+        var name = "Device " + i;
+        var id = "ID " + i;
+
+        var select = document.getElementById("dispositivos"); //Criar o dropdown com os dispositivos
+        var el = document.createElement("option");
+
+        el.textContent = localStorage[name];
+        //alert(el.textContent);
+        el.value = localStorage[id];
+        //alert(el.value);
+        select.appendChild(el);
+    }
+}
+
+
 function save_ids (json) {
     for (var i = 0; i < json.result.deviceList.length; i++) {
+            total++;
     		var name = "Device " + i;
     		console.log(name);
     		localStorage[name] = json.result.deviceList[i].alias;
     		var id = "ID " + i;
     		localStorage[id] = json.result.deviceList[i].deviceId;
     		console.log(localStorage[name] + "::" + localStorage[id]);
-    	}
+    }
 }
 
 function kill () {
@@ -279,7 +299,7 @@ function valid_login (email, password) {
 	xhr.onreadystatechange = function () {
 		if (xhr.status === 0) {
 			//("Internet desligada. Por favor abra a app com internet");
-			document.getElementById("internet").innerHTML =  "Sem internet, por favor desligue a aplicacao.";
+			document.getElementById("internet").innerHTML =  "Sem internet, por favor verifique a sua conexao.";
             setTimeout(reload, 3000);
 		}
 
@@ -315,8 +335,9 @@ function get_state () {
  
     xhr.onreadystatechange = function () {
     	if (xhr.status === 0) {
-			//ternet desligada. Por favor abra a app com internet");
-			document.getElementById("internet").innerHTML =  "Sem internet, por favor desligue a aplicacao.";
+			//internet desligada. Por favor abra a app com internet");
+			document.getElementById("internet").innerHTML =  "Sem internet, por favor verifique a sua conexao";
+			document.getElementById("state").style.visibility = "hidden";
             setTimeout(reload, 3000);;
     	}
 

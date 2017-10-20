@@ -1,8 +1,9 @@
 #state {
 	position: absolute;
-	left: 120px;
-	top: 180px;
+	left: 80px;
+	top: 400px;
 	color: black;
+	visibility: visible;
 }
 
 #username {
@@ -64,7 +65,7 @@ p {
 	left: 150px;
 }
 
-select {
+#time {
 	background: #dce5dd;
 	width: 35px;
 }
@@ -83,8 +84,8 @@ select {
 
 #off {
 	position: absolute;
-	top: 75px;
-	left: 130px;
+	top: 270px;
+	left: 90px;
 	width: 200px;
 	height: 150px;
 	visibility: hidden;
@@ -95,4 +96,10 @@ select {
     top: 300px;
     font-size: 40px;
     color: red;
+}
+
+#dropdown_dispositivos {
+    position: absolute;
+    top:150px;
+    left:200px;
 }
