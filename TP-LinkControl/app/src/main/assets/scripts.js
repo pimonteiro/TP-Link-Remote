@@ -123,7 +123,7 @@ function sendPOST2 () {
 		"method":"passthrough", 
 		"params": {"deviceId": "xxx", "requestData": "{\"system\":{\"set_relay_state\":{\"state\":\"x\"}}}" }
 		};
-	obj.params.deviceId = localStorage["ID 0"]; //TODO Substituir para o resultado da SELECT
+	obj.params.deviceId = document.getElementById("dispositivos").value;
 
 	var requestDataOb = JSON.parse(obj.params.requestData);
 
@@ -156,8 +156,7 @@ function sendPOST1 (t) {
 		"method":"passthrough", 
 		"params": {"deviceId": "xxx", "requestData": "{\"system\":{\"set_relay_state\":{\"state\":\"x\"}}}" }
 		};
-	obj.params.deviceId = localStorage["ID 0"]; //TODO Criar atraves de um dropdown o dispositivo pretendido
-
+	obj.params.deviceId = document.getElementById("dispositivos").value;
 	var requestDataOb = JSON.parse(obj.params.requestData);
 
 	requestDataOb.system.set_relay_state.state = 1;
@@ -327,8 +326,8 @@ function get_state () {
  
     var obj = {"method":"passthrough", "params": {"deviceId": "xxx", "requestData": "{\"system\":{\"get_sysinfo\":null},\"emeter\":{\"get_realtime\":null}}"}};
  
-    obj.params.deviceId = localStorage["ID 0"];
- 
+    obj.params.deviceId = document.getElementById("dispositivos").value;
+
     var data = JSON.stringify(obj);
  
     xhr.send(data);
